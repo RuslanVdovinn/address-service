@@ -5,10 +5,9 @@ import com.seleniumexpress.assressapp.service.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/address")
@@ -19,6 +18,18 @@ public class AddressController {
     @Autowired
     public AddressController(AddressService addressService) {
         this.addressService = addressService;
+    }
+
+    @PostMapping()
+    public ResponseEntity createAddress(@RequestBody AddressDTO addressDTO) {
+        addressService.createAddress(addressDTO);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+    @GetMapping
+    public ResponseEntity<List<AddressDTO>> getAllAddress() {
+        List<AddressDTO> addressResponse = addressService.getAllAddress();
+
+        return ResponseEntity.status(HttpStatus.OK).body(addressResponse);
     }
 
     @GetMapping("/{employeeId}")
